@@ -42,7 +42,6 @@ const AddTodoWindow = styled.div`
 const Buttons = styled.div`
   display: flex;
   justify-content: space-between;
-
 >button{
     user-select: none;
     border: 0px solid transparent;
@@ -56,6 +55,7 @@ const Buttons = styled.div`
     cursor: grab;
   }
 `
+
 
 const AddNewTask = ({setTodoLists, todoLists, openModalHandler, isOpen, setIsOpen}) => {
   const [content, setContent] = useState('');

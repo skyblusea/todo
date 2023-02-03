@@ -15,11 +15,17 @@ const TodayContainer = styled.section`
 const DayCalendar = styled.section`
   height: 100px;
 `
+const Days=styled.div`
+  display: flex;
+  flex-direction: row;
+`
+const SelectedDay= styled.div`
+
+`
 
 const TodoLists = styled.ul`
   height: 100%;
 `
-
 const ModalBtn = styled.button`
   background-color: var(--coz-purple-600);
   text-decoration: none;
@@ -47,7 +53,10 @@ const Today = () => {
 
   return (
     <TodayContainer>
-    <DayCalendar>calendar</DayCalendar>
+    <DayCalendar>
+      <Days><div>s</div><div>m</div><div>t</div><div>w</div><div>t</div><div>f</div><div>s</div></Days>
+      
+      {new Date().toLocaleDateString('ko-KR')}</DayCalendar>
     <TodoLists>
         {todoLists.map((list, idx)=>{
         return <div><TodoList 
