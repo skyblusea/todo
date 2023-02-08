@@ -12,8 +12,6 @@ export const MenuPannel = styled.div`
       height: 100%;
       background-color: pink;
       /* transition: all 2s ease-in-out 0s; */
-      transform: translate3d(0, 0, 0);
-      transform-style: preserve-3d;
       animation: moveFromRight .7s ease both;
   }
   &.isClicked{
@@ -21,8 +19,6 @@ export const MenuPannel = styled.div`
       background-color: pink;
       width: 100%;
       height: 100%;
-      transform: translate3d(0, 0, 0);
-      transform-style: preserve-3d;
       animation: moveFromLeft .7s ease both;
   }
   @keyframes moveFromLeft {
@@ -35,8 +31,11 @@ export const MenuPannel = styled.div`
 `
 export const MenuBtn = styled.button`
   position: absolute;
+  display: block;
+  float: left;
+  width: 25px;
+  /* margin: 1% 0 1% 1.6%; */
   &.active{
-    width: 20px;
     user-select: none;
     border: 0px solid transparent;
     background-color: transparent;
@@ -46,13 +45,12 @@ export const MenuBtn = styled.button`
     white-space: nowrap;
     vertical-align: middle;
     cursor: pointer; 
-    /* transform: translateX(300px); */
-    right: 20px;
+    right: 20px; //absolute 에서 transition 을 주려면 notActive 도 right 값이 존재해야함. left right 따로 쓰면 안나옴 
     top: 20px;
-    animation: moveFromLeft .8s ease both;
+    transition: all 0.7s ease-in-out 0s;
+    /* animation: moveFromLeft 3s ease both;으로 하면 trasnlateX(-1000%)정도는 해야함... */
   }
   &.notActive{
-    width: 20px;
     user-select: none;
     border: 0px solid transparent;
     background-color:transparent;
@@ -61,36 +59,28 @@ export const MenuBtn = styled.button`
     white-space: nowrap;
     vertical-align: middle;
     cursor: pointer;
-    left: 80px;
+    right: calc(100% - 40px);
     top: 20px;
-    animation: moveFromRight .8s ease both;
   }
   div{
-    height: 0.15rem;
+    height: 3.5px;
     background-color: #3c3c60;
     transition: all 0.2s ease-in-out 0s;
   }
   .menu_line{
-    margin-bottom: 5px;
+    margin-bottom: 4px;
   }
   .menu_line_active_t{
-    transform: translateY(2px) rotate(45deg);
+    transform: translateY(4px) rotate(45deg);
     transition: all 0.2s ease-in-out 0s;
   }
   .menu_line_active_m{
     opacity: 0;
   }
   .menu_line_active_b{
-    transform: translateY(-2.5px) rotate(-45deg);
+    transform: translateY(-4px) rotate(-45deg);
     transition: all 0.2s ease-in-out 0s;   
   }
-  @keyframes moveFromLeft {
-    from { -webkit-transform: translateX(-300%); transform: translateX(-300%); }
-  }
-  @keyframes moveFromRight {
-    from {}
-    to {-webkit-transform: translateX(-300%); transform: translateX(-300%);}
-  };
 `
 const MenuContainer = styled.div`
     display: flex;
