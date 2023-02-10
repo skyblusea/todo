@@ -6,13 +6,13 @@ import Month from './Pages/month';
 
 
 function App() {
-  const [backFromToday, setBackFromToday] = useState(false)
+  const [closeToday, setcloseToday] = useState(false)
   return (
     <BrowserRouter>
       <div className="App">
         <Routes>
-          <Route path="/" element={<Month backFromToday={backFromToday} />}/>
-          <Route path="/today" element={<Today setBackFromToday={setBackFromToday} backFromToday={backFromToday} />}/>
+          <Route path="/" element={<Month closeToday={closeToday} setcloseToday={setcloseToday} />}/>
+          <Route path="/today" element={<Today closeToday={closeToday} setcloseToday={setcloseToday} />}/>
         </Routes>    
       </div>
     </BrowserRouter>

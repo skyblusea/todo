@@ -6,7 +6,7 @@ import AddNewTask from '../Component/addnewtask'
 import TodoList from "../Component/todoList";
 import WeekCalendar from "../Component/WeekCalendar";
 import { initialState } from "../Data/Dummydata";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 const TodayContainer = styled.section`
@@ -22,10 +22,19 @@ const TodayContainer = styled.section`
     text-decoration: none;
     color: black;
   }
-  animation: moveFromTop .7s ease both;
-  @keyframes moveFromTop {
+  &.openToday{
+    animation: moveFromBottom .7s ease both;
+  }
+  &.closeToday{
+    animation: moveFromTop .7s ease both;
+  }
+  @keyframes moveFromBottom {
     from { -webkit-transform: translateY(100%); transform: translateY(100%); }
   }
+  @keyframes moveFromTop {
+    from {}
+    to {-webkit-transform: translateY(100%); transform: translateY(100%);}
+  };
 `
 const TodoLists = styled.ul`
   font-size: 1.4rem;
@@ -49,23 +58,27 @@ const TodayString = styled.div`
   margin: 10px 0 30px;
 `
 
-const Today = ({setBackFromToday, backFromToday}) => {
+const Today = ({closeToday, setcloseToday}) => {
+  const navigate = useNavigate();
   const [todoLists, setTodoLists] = useState(initialState.todos)
   const [isOpen, setIsOpen] = useState(false);
   const openModalHandler = () => {
     setIsOpen(!isOpen)
   };
   const [selectedDate, setDate] = useState(new Date().toISOString().substring(0,10));
+
   const today= new Date(selectedDate);
   const todayString = new Intl.DateTimeFormat('en-US',{month: "short", day: "numeric"}).format(today);
   const closeTodayHandler = () => {
-    setBackFromToday(!backFromToday)
+    setcloseToday(!closeToday)
+    setTimeout(()=>{navigate("/")}, 1000)//today 닫는 애니메이션을 위한 딜레이
   }
-  console.log(backFromToday)
+
   return (
     <>
-      <TodayContainer>
-        <Link to="/" className="closeTodayButton" onClick={closeTodayHandler}><FontAwesomeIcon icon={faChevronDown} /></Link>
+      <TodayContainer className={closeToday ?"closeToday" :"openToday"}>
+        {/* link로 하면 바로 이동하기 때문에 애니메이션이 나오지 않는다 onclick 에 settimeout 해주고 usenavigate로 이동시키자 */}
+        <div className="closeTodayButton" onClick={closeTodayHandler}><FontAwesomeIcon icon={faChevronDown} /></div>
         <WeekCalendar selectedDate={selectedDate} setDate={setDate} today={today}/>
         <TodoLists>
         <TodayString>{todayString}</TodayString>

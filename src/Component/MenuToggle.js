@@ -95,7 +95,7 @@ const MenuLi = styled.li`
 `
 
 
-const MenuToggle = () => {
+const MenuToggle = ({openTodayHandler}) => {
   const [isClick, setIsClick] = useState(false);
   const menuHandler = () => {
   setIsClick(!isClick)
@@ -111,7 +111,7 @@ const MenuToggle = () => {
                   <p>안녕하세요, 민지님!</p>
               </Profile>
               <ul>
-              <MenuLi><Link to="/today">할일</Link></MenuLi>
+              <MenuLi><Link to="/today" onClick={openTodayHandler}>할일</Link></MenuLi>
               <MenuLi><Link to="/">달력</Link></MenuLi>
               <MenuLi>습관</MenuLi>
               <MenuLi>일정</MenuLi>

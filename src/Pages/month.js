@@ -5,21 +5,20 @@ import MenuToggle from "../Component/MenuToggle";
 const MonthContainer = styled.section`
     display: flex;
     height: 100%;
-    animation: moveFromTop .7s ease both;
-    @keyframes moveFromTop {
-     from { -webkit-transform: translateY(100%); transform: translateY(100%); }
-    }
 `
 
 
 
 
 
-const Month = ({backFromToday}) => {
+const Month = ({closeToday, setcloseToday}) => {
+    const openTodayHandler = () => {
+        setcloseToday(!closeToday)
+      }
     return (
         <>
-            <MonthContainer className={backFromToday ?"closeMotion" :null}>
-                <MenuToggle/>              
+            <MonthContainer>
+                <MenuToggle openTodayHandler={openTodayHandler}/>              
             </MonthContainer>
 
         </>
