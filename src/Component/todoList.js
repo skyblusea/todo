@@ -24,12 +24,12 @@ const TodoList = ({todoLists, setTodoLists, list, idx}) => {
     setTodoLists([...todoLists.slice(0,key),selectedData,...todoLists.slice(key+1)]) //!
   }
   const eraseList = (key) => {
-    let filtered = todoLists.filter((list, idx)=> idx !== key)
+    let filtered = todoLists.filter((list,idx)=> idx !== key)
+
     setTodoLists(filtered)
   }
   const [editMode, setEditMode] = useState(false);
   const editModeHandler = () => {
-    console.log(list)
     setEditMode(!editMode)
   }
 
@@ -47,7 +47,7 @@ const TodoList = ({todoLists, setTodoLists, list, idx}) => {
 
   return(
     <>
-      <List className={list.isDone ?"done" :null} key={list.id}>
+      <List className={list.isDone ?"done" :null}>
         <input type='checkbox' checked={list.isDone} onChange={(e)=>setIsDoneHandler(e, idx)} />
         {editMode === true
         ? <input 

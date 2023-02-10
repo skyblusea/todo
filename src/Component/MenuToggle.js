@@ -54,14 +54,14 @@ export const MenuBtn = styled.button`
     margin-bottom: 4px;
   }
   .menu_line_active_t{
-    transform: translateY(4px) rotate(45deg);
+    transform: translateY(3px) rotate(45deg);
     transition: all 0.2s ease-in-out 0s;
   }
   .menu_line_active_m{
     opacity: 0;
   }
   .menu_line_active_b{
-    transform: translateY(-4px) rotate(-45deg);
+    transform: translateY(-3px) rotate(-45deg);
     transition: all 0.2s ease-in-out 0s;   
   }
 `
@@ -91,7 +91,6 @@ const MenuLi = styled.li`
       text-decoration: none;
       color: black
     }
-    
     //!Link는 a태그 선택자로 설정
 `
 

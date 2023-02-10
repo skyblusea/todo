@@ -131,8 +131,8 @@ const WeekCalendar = ({selectedDate, setDate, today}) => {
         <Days><div>s</div><div>m</div><div>t</div><div>w</div><div>t</div><div>f</div><div>s</div></Days>
         <Scroll>
           {seperatedNums.map((arr,idx)=>{ 
-            return <div>{arr.map((date)=>{
-              return <Ele className={date===cD ?`selectedDay ${ruThisMonth(date,idx)}` :`${ruThisMonth(date,idx)}`} onClick={()=>moveDateHandler(date, idx)}>{date}</Ele>
+            return <div key={`week${idx}`}>{arr.map((date)=>{
+              return <Ele key={`day${date}`}className={date===cD ?`selectedDay ${ruThisMonth(date,idx)}` :`${ruThisMonth(date,idx)}`} onClick={()=>moveDateHandler(date, idx)}>{date}</Ele>
             })}</div>
           })}
         </Scroll>
