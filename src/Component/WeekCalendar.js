@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const WeekContainer = styled.section`
   padding: 0 40px 0 40px;
   font-family:'Lato';
-  margin: 30px 0 30px 0;
+  margin: 30px 0 90px 0;
 `
 const Days = styled.div`
   margin-bottom: 30px;
@@ -51,6 +51,9 @@ const Scroll = styled.div`
     color:white;
     background-color: black;
   }
+  .IamNotThisMonth{
+    color: rgba(200, 200, 200);
+  }
 `
 const Ele = styled.div`
     height: 2.5rem;
@@ -64,10 +67,9 @@ const Ele = styled.div`
 `
 
 
-const WeekCalendar = ({selectedDate, setDate}) => {
-  const day= new Date(selectedDate);
-  const currentDate=new Intl.DateTimeFormat('en-GB', {day: "numeric"}).format(day);
-  const currentDay=day.getDay();
+const WeekCalendar = ({selectedDate, setDate, today}) => {
+  const currentDate=new Intl.DateTimeFormat('en-GB', {day: "numeric"}).format(today);
+  const currentMonth = today.getMonth()+1;
   const lastDate=new Date(selectedDate.substring(0,4),selectedDate.substring(5,7),0).getDate()
   const lastMonthLastDate=new Date(selectedDate.substring(0,4),Number(selectedDate.substring(5,7))+1,0).getDate()
   const monthNums=[...new Array(lastDate)].map((ele,idx)=>{return idx+1})
@@ -101,22 +103,36 @@ const WeekCalendar = ({selectedDate, setDate}) => {
   //   }
   // }
   // const currentWeek=[...before,cD,...after]
-  const moveDateHandler = (date) => {
-    //숫자를 1자리 수로 표시했더니 ㅠㅠㅠㅠㅠ toLocalstring 으로 2자리 수가 되게 변환하자
-    setDate(selectedDate.substring(0,8)+date.toLocaleString('en-US', {
-      minimumIntegerDigits: 2,
-      useGrouping: false
-    }))
+  const moveDateHandler = (date, idx) => {
+    //? 숫자를 1자리 수로 표시했더니 2022-02-1로 입력됨... toLocalstring 으로 2자리 수가 되게 변환하자
+    //해당 월에 속하지 않으면 월도 다시 설정
+    let year = selectedDate.substring(0,4)
+    let month = currentMonth
+    if(date>=20 && idx<=1){
+      month = currentMonth-1
+    } else if(date<=7 && idx>=3){
+      month = currentMonth+1
+    }
+    let day = date.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping: false})
+    let fullDate=`${year}-${month.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping: false})}-${day}`
+    setDate(fullDate)
   }
-  // const currentMonth = new Intl.DateTimeFormat('en-GB', {month: 'long'}).format(day)
+  //? 해당 달에 속하지 않는 날짜는 그레이색으로 표시해보자
+  // 23 - 31  인데 첫번째 그룹에 있거나 1-7인데 마지막쯤 그룹에 있으면 해당 달 날짜가 아니라고 하기
+  const ruThisMonth = (date, idx) => {
+    if((date>=20 && idx<=1) || (date<=7 && idx>=3)){
+      return "IamNotThisMonth"
+    }
+  }
+
   return (
     <>
       <WeekContainer>
         <Days><div>s</div><div>m</div><div>t</div><div>w</div><div>t</div><div>f</div><div>s</div></Days>
         <Scroll>
-          {seperatedNums.map((arr)=>{
+          {seperatedNums.map((arr,idx)=>{ 
             return <div>{arr.map((date)=>{
-              return <Ele className={date===cD ?"selectedDay" :null} onClick={()=>moveDateHandler(date)}>{date}</Ele>
+              return <Ele className={date===cD ?`selectedDay ${ruThisMonth(date,idx)}` :`${ruThisMonth(date,idx)}`} onClick={()=>moveDateHandler(date, idx)}>{date}</Ele>
             })}</div>
           })}
         </Scroll>

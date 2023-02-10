@@ -37,11 +37,10 @@ const TodoList = ({todoLists, setTodoLists, list, idx}) => {
   const changeContentHandler = (e) => {
     setChangedContent(e.target.value)
   }
-  const changeTaskHandler = (key) => {
-    const seletedTodo = todoLists.filter((ele)=>ele.id === key) 
+  const changeTaskHandler = (idx) => {
+    const seletedTodo = todoLists.filter((ele,idx1)=> idx1 === idx)[0]
     seletedTodo.content = changedContent
-    // setTodoLists([...todoLists.slice(0,key),changedTask,...todoLists.slice(key+1)])
-    //! 배열의 인덱스를 키값으로 해서 신규배열 생성하면 안됨
+    setTodoLists([...todoLists.slice(0,idx),seletedTodo,...todoLists.slice(idx+1)])
     setEditMode(!editMode)
   }
 

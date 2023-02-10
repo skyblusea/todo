@@ -29,6 +29,11 @@ const ModalBtn = styled.button`
   right: 84px;
   bottom: 52px;
 `;
+const TodayString = styled.div`
+  font-family: "Lato";
+  font-size: 2rem;
+  margin: 10px 0 30px;
+`
 
 const Today = () => {
   const [todoLists, setTodoLists] = useState(initialState.todos)
@@ -36,13 +41,17 @@ const Today = () => {
   const openModalHandler = () => {
     setIsOpen(!isOpen)
   };
-  
   const [selectedDate, setDate] = useState(new Date().toISOString().substring(0,10));
+  const today= new Date(selectedDate);
+  const todayString = new Intl.DateTimeFormat('en-US',{month: "short", day: "numeric"}).format(today);
+
   return (
     <>
       <TodayContainer>
-        <WeekCalendar selectedDate={selectedDate} setDate={setDate}/>
+        <WeekCalendar selectedDate={selectedDate} setDate={setDate} today={today}/>
+        
         <TodoLists>
+        <TodayString>{todayString}</TodayString>
           {/* filter로 오늘 날짜 */}
             {todoLists.filter((list)=>
               list.date === selectedDate
