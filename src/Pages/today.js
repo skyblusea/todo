@@ -58,10 +58,12 @@ const TodayString = styled.div`
   margin: 10px 0 30px;
 `
 
-const Today = ({closeToday, setcloseToday}) => {
+const Today = () => {
   const navigate = useNavigate();
   const [todoLists, setTodoLists] = useState(initialState.todos)
   const [isOpen, setIsOpen] = useState(false);
+  const [closeToday, setcloseToday] = useState(false)
+
   const openModalHandler = () => {
     setIsOpen(!isOpen)
   };
@@ -71,7 +73,11 @@ const Today = ({closeToday, setcloseToday}) => {
   const todayString = new Intl.DateTimeFormat('en-US',{month: "short", day: "numeric"}).format(today);
   const closeTodayHandler = () => {
     setcloseToday(!closeToday)
-    setTimeout(()=>{navigate("/")}, 1000)//today 닫는 애니메이션을 위한 딜레이
+    setTimeout(()=>{
+      //openTodayHandler();//함수가 끝나기 전이라 closeToday의 상태가 아직 안바뀌어있음 위와 같은 상태 
+      setcloseToday(false) //false 로 고정 
+      navigate("/");
+    }, 300)//today 닫는 애니메이션을 위한 딜레
   }
 
   return (

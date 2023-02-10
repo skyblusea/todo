@@ -71,7 +71,7 @@ const WeekCalendar = ({selectedDate, setDate, today}) => {
   const currentDate=new Intl.DateTimeFormat('en-GB', {day: "numeric"}).format(today);
   const currentMonth = today.getMonth()+1;
   const lastDate=new Date(selectedDate.substring(0,4),selectedDate.substring(5,7),0).getDate()
-  const lastMonthLastDate=new Date(selectedDate.substring(0,4),Number(selectedDate.substring(5,7))+1,0).getDate()
+  const lastMonthLastDate=new Date(selectedDate.substring(0,4),Number(selectedDate.substring(5,7))-1,0).getDate()
   const monthNums=[...new Array(lastDate)].map((ele,idx)=>{return idx+1})
   const firstDay=new Date(selectedDate.substring(0,4),selectedDate.substring(5,7),1).getDay()
   const lastDay=new Date(selectedDate.substring(0,4),selectedDate.substring(5,7),lastDate).getDay()
@@ -106,12 +106,18 @@ const WeekCalendar = ({selectedDate, setDate, today}) => {
   const moveDateHandler = (date, idx) => {
     //? 숫자를 1자리 수로 표시했더니 2022-02-1로 입력됨... toLocalstring 으로 2자리 수가 되게 변환하자
     //해당 월에 속하지 않으면 월도 다시 설정
-    let year = selectedDate.substring(0,4)
+    let year = Number(selectedDate.substring(0,4))
+    if(currentMonth===1 && date>=20 && idx<=1){
+      year = year-1
+    } else if(currentMonth===12 && date<=7 && idx>=3){
+      year = year+1
+    }
+    console.log(year+1)
     let month = currentMonth
     if(date>=20 && idx<=1){
-      month = currentMonth-1
+        currentMonth === 1 ? month = 12 : month = currentMonth-1
     } else if(date<=7 && idx>=3){
-      month = currentMonth+1
+      currentMonth === 12 ? month = 1 :month = currentMonth+1
     }
     let day = date.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping: false})
     let fullDate=`${year}-${month.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping: false})}-${day}`
