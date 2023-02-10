@@ -6,19 +6,14 @@ import styled from 'styled-components';
 export const MenuPannel = styled.div`
   overflow: hidden; //! 자식 position:fixed 이면 안먹힘
   padding: 2vh 1vw 0 3vw;
+  background-color: rgba(220,220,220);
+  width: 100%;
+  height: 100%;
   &.notClicked{
-      visibility: visible;
-      width: 100%;
-      height: 100%;
-      background-color: pink;
       /* transition: all 2s ease-in-out 0s; */
       animation: moveFromRight .7s ease both;
   }
   &.isClicked{
-      visibility: visible; 
-      background-color: pink;
-      width: 100%;
-      height: 100%;
       animation: moveFromLeft .7s ease both;
   }
   @keyframes moveFromLeft {
@@ -34,33 +29,21 @@ export const MenuBtn = styled.button`
   display: block;
   float: left;
   width: 25px;
+  border: 0px solid transparent;
+  background-color: transparent;
+  white-space: nowrap;
+  cursor: pointer; 
   /* margin: 1% 0 1% 1.6%; */
   &.active{
-    user-select: none;
-    border: 0px solid transparent;
-    background-color: transparent;
-    display: inline-block;
-    font-weight: 700;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    cursor: pointer; 
     right: 20px; //absolute 에서 transition 을 주려면 notActive 도 right 값이 존재해야함. left right 따로 쓰면 안나옴 
     top: 20px;
-    transition: all 0.7s ease-in-out 0s;
+    transition: all 0.7s ease;
     /* animation: moveFromLeft 3s ease both;으로 하면 trasnlateX(-1000%)정도는 해야함... */
   }
   &.notActive{
-    user-select: none;
-    border: 0px solid transparent;
-    background-color:transparent;
-    display: inline-block;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    cursor: pointer;
     right: calc(100% - 40px);
     top: 20px;
+    transition: all 0.7s ease;
   }
   div{
     height: 3.5px;
@@ -89,13 +72,13 @@ const MenuContainer = styled.div`
 const Profile = styled.div`
     margin-bottom: 15%;
     display: flex;
-    align-items: row;
     align-items: flex-end;
+    font-size: 1.3rem;
     >p{
      margin-left: 5px;
     }
     >img{
-     width: 3.5rem;
+     width: 4rem;
      border-radius: 50%;
     }
 `
@@ -103,17 +86,19 @@ const Profile = styled.div`
 const MenuLi = styled.li`
     list-style: none;
     font-size: 1.3rem;
-    margin-bottom: 2vh;
-    a{
-        text-decoration: none;
+    margin-bottom: 3vh;
+    >a{
+      text-decoration: none;
+      color: black
     }
+    
     //!Link는 a태그 선택자로 설정
 `
 
 
 const MenuToggle = () => {
   const [isClick, setIsClick] = useState(false);
-  const onClickHandler = () => {
+  const menuHandler = () => {
   setIsClick(!isClick)
   }
   return (
@@ -127,7 +112,7 @@ const MenuToggle = () => {
                   <p>안녕하세요, 민지님!</p>
               </Profile>
               <ul>
-              <MenuLi><Link to="/today">오늘 할일</Link></MenuLi>
+              <MenuLi><Link to="/today">할일</Link></MenuLi>
               <MenuLi><Link to="/">달력</Link></MenuLi>
               <MenuLi>습관</MenuLi>
               <MenuLi>일정</MenuLi>
@@ -135,7 +120,7 @@ const MenuToggle = () => {
           </MenuContainer>
           :null}         
       </MenuPannel>
-      <MenuBtn onClick={onClickHandler} className={isClick ?"active" :"notActive"}>
+      <MenuBtn onClick={menuHandler} className={isClick ?"active" :"notActive"}>
           <div className={isClick ?"menu_line_active_t" :"menu_line"}></div>
           <div className={isClick ?"menu_line_active_m" :"menu_line"}></div>
           <div className={isClick ?"menu_line_active_b" :"menu_line_b"}></div>

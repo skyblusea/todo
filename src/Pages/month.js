@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from 'styled-components';
 import MenuToggle from "../Component/MenuToggle";
 
@@ -12,14 +12,10 @@ const MonthContainer = styled.section`
 
 
 const Month = () => {
-
-
     return (
         <>
             <MonthContainer>
-                <MenuToggle/>
-
-                
+                <MenuToggle/>              
             </MonthContainer>
 
         </>

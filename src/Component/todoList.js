@@ -3,7 +3,18 @@ import styled from 'styled-components';
 import { faTimes, faPenToSquare, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-
+const List = styled.li`
+  margin-bottom: 10px;
+  &.done{
+    color : rgba(100,100,100);
+    text-decoration: line-through rgba(100,100,100);
+  }
+  >input[type=text]{
+    background-color: transparent;
+    border: transparent;
+    font-size: 1.4rem;
+  }
+`
 
 
 const TodoList = ({todoLists, setTodoLists, list, idx}) => {
@@ -18,6 +29,7 @@ const TodoList = ({todoLists, setTodoLists, list, idx}) => {
   }
   const [editMode, setEditMode] = useState(false);
   const editModeHandler = () => {
+    console.log(list)
     setEditMode(!editMode)
   }
 
@@ -26,35 +38,33 @@ const TodoList = ({todoLists, setTodoLists, list, idx}) => {
     setChangedContent(e.target.value)
   }
   const changeTaskHandler = (key) => {
-    const changedTask = {
-      date: list.date,
-      content: changedContent,
-      isDone: list.isDone
-    }
-    setTodoLists([...todoLists.slice(0,key),changedTask,...todoLists.slice(key+1)])
+    const seletedTodo = todoLists.filter((ele)=>ele.id === key) 
+    seletedTodo.content = changedContent
+    // setTodoLists([...todoLists.slice(0,key),changedTask,...todoLists.slice(key+1)])
+    //! 배열의 인덱스를 키값으로 해서 신규배열 생성하면 안됨
     setEditMode(!editMode)
   }
 
 
   return(
     <>
-      <li key={idx}>
-      <input type='checkbox' checked={list.isDone} onChange={(e)=>setIsDoneHandler(e, idx)} />
-      {editMode === true
-      ? <input 
-          type="text"
-          value={changedContent}
-          placeholder={changedContent}
-          onChange={changeContentHandler}  
-        />
-      : list.content
-      }
-      {editMode === true
-      ? <button onClick={()=>changeTaskHandler(idx)}><FontAwesomeIcon icon={faCheck} size="lg" /></button>
-      : <button onClick={editModeHandler}><FontAwesomeIcon icon={faPenToSquare} size="lg" /></button>
-      }
-      <button onClick={()=>eraseList(idx)}><FontAwesomeIcon icon={faTimes} size="lg" /></button>
-      </li>
+      <List className={list.isDone ?"done" :null} key={list.id}>
+        <input type='checkbox' checked={list.isDone} onChange={(e)=>setIsDoneHandler(e, idx)} />
+        {editMode === true
+        ? <input 
+            type="text"
+            value={changedContent}
+            placeholder={changedContent}
+            onChange={changeContentHandler}  
+          />
+        : ` ${list.content}`
+        }
+        {editMode === true
+        ? <button onClick={()=>changeTaskHandler(idx)}><FontAwesomeIcon icon={faCheck} size="lg" /></button>
+        : <button onClick={editModeHandler}><FontAwesomeIcon icon={faPenToSquare} size="lg" /></button>
+        }
+        <button onClick={()=>eraseList(idx)}><FontAwesomeIcon icon={faTimes} size="lg" /></button>
+      </List>
     </>
 
   )
