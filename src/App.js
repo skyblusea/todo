@@ -9,7 +9,7 @@ function App() {
 
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename='/todo'>
       <div className="App">
         <Routes>
           <Route path="/" element={<Month />}/>

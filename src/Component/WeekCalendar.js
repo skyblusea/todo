@@ -6,6 +6,7 @@ const WeekContainer = styled.section`
   padding: 0 40px 0 40px;
   font-family:'Lato';
   margin: 30px 0 90px 0;
+  scrollbar-color: transparent;
 `
 const Days = styled.div`
   margin-bottom: 30px;
@@ -39,6 +40,7 @@ const Scroll = styled.div`
   font-size: 1.5rem;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
+  /* overflow: overlay; //스크롤바 공간차지 안하고 위로 겹치기 */
   >div{
     position: relative;
     flex: 0 0 100%;    
@@ -54,6 +56,10 @@ const Scroll = styled.div`
   .IamNotThisMonth{
     color: rgba(200, 200, 200);
   }
+  ::-webkit-scrollbar{
+    /* background-color: transparent; */
+  }
+
 `
 const Ele = styled.div`
     height: 2.5rem;
@@ -63,8 +69,9 @@ const Ele = styled.div`
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    cursor: grab;
+    cursor: pointer;
 `
+
 
 
 const WeekCalendar = ({selectedDate, setDate, today}) => {
