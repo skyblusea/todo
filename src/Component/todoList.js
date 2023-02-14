@@ -7,10 +7,6 @@ const List = styled.li`
   margin-bottom: 10px;
   display: flex;
   align-items: center;
-  &.done{
-    color : rgba(100,100,100);
-    text-decoration: line-through rgba(100,100,100);
-  }
   >input[type=text]{
     width: 100%;
     background-color: transparent;
@@ -19,8 +15,33 @@ const List = styled.li`
     /* line-height: 1.4rem; */
   }
   .todoContent{
-    width:100%;
+    width: 100%;
+    padding: 0 3px 0 3px;
+    cursor:pointer;
+    position:relative;
+    :after{
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 0;
+      height: 0.1rem;
+      background: rgba(150, 150, 150);
+    }
+    &.done{
+      color : rgba(150, 150, 150);
+      transition: color 0.4s ease;
+      :after{
+        width: 100%;
+        transition: all 0.4s ease;
+      }
+    }
   }
+  .todoContent + div {
+    width: 100%;
+    /* 수정 삭제 아이콘 정렬을 위해 */
+  }
+
   >button{
     font-size: 1.2rem;
     background-color: transparent;
@@ -30,18 +51,56 @@ const List = styled.li`
   }
 `
 const Checkbox = styled.div`
+  /* 체크박스는 숨기고 라벨로 꾸미기 */
+  input[type="checkbox"]{
+    visibility: hidden;
+    display: none;
+  }
+  >label{
+    display: flex;
+    width: 1rem;
+    height: 1rem;
+    margin-right: 6px;
+    border: 0.1rem solid #c8ccd4;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  input:checked + label{
+    border-color: transparent;
+  }
+  .svg{
+    width: 1rem;
+    height: 1rem;
+    position: relative;
+    top: 0.1rem;
+    transform: scale(0);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  input:checked + label svg{
+    /* input:checked 와 같은 부모를 공유하고 있는 label 의 자식요소 svg */
+    transform: scale(1);
+    transition: all 0.4s ease;
+    transition-delay: 0.1s;
+  }
+  polyline{
+    stroke: #18cda6;
+    stroke-width: 2;
+    fill:none;
+  }
 
 `
 
 
 const TodoList = ({todoLists, setTodoLists, list, idx}) => {
   const setIsDoneHandler = (e, key) => {
-    let selectedData = todoLists[key]
-    selectedData = {...selectedData,isDone: !selectedData.isDone }
-    setTodoLists([...todoLists.slice(0,key),selectedData,...todoLists.slice(key+1)]) //!
+    const selectedTodo = todoLists.filter((ele)=> ele.id === list.id)[0]
+    const idx = todoLists.indexOf(selectedTodo);
+    const changedIsDone = {...selectedTodo,isDone: !selectedTodo.isDone }
+    setTodoLists([...todoLists.slice(0,idx),changedIsDone,...todoLists.slice(idx+1)]) //!
   }
   const eraseList = (key) => {
-    let filtered = todoLists.filter((list,idx)=> idx !== key)
+    let filtered = todoLists.filter((ele)=> ele.id !== key)
     setTodoLists(filtered)
   }
   const [editMode, setEditMode] = useState(false);
@@ -54,14 +113,11 @@ const TodoList = ({todoLists, setTodoLists, list, idx}) => {
     setChangedContent(e.target.value)
   }
   const changeTaskHandler = (list) => {
-    const seletedTodo = todoLists.filter((ele)=> ele.id === list.id)[0]
-    const idx = todoLists.indexOf(seletedTodo);
+    const selectedTodo = todoLists.filter((ele)=> ele.id === list.id)[0]
+    const idx = todoLists.indexOf(selectedTodo);
     const changedTodo = {
-      id: list.id,
-      content: changedContent,
-      isDone: list.isDone,
-      date: list.date,
-      tag: list.tag
+      ...selectedTodo,
+      content: changedContent
     }
     setTodoLists([...todoLists.slice(0,idx),changedTodo,...todoLists.slice(idx+1)])
     setEditMode(!editMode)
@@ -69,33 +125,31 @@ const TodoList = ({todoLists, setTodoLists, list, idx}) => {
 
   return(
     <>
-      <List className={list.isDone ?"done" :null}>
+      <List>
         <Checkbox>
-          <input id={list.id} type='checkbox' checked={list.isDone} onChange={(e)=>setIsDoneHandler(e, idx)} />
+          <input id={list.id} type='checkbox' checked={list.isDone} onChange={(e)=>setIsDoneHandler(e, list.id)} />
           <label for={list.id}>
-            <span>
-              <svg width="14px" height="12px" viewBox="0 0 14 12">
-                <polyline points="1 7.6 5 11 13 1" fill="none" stroke="black" strokeWidth="2" />
-              </svg>
-
-            </span>
+            <svg className="svg">
+              <polyline points="1 7.6 5 11 13 1"/>
+            </svg>
           </label>
         </Checkbox>
 
-        {editMode === true
+        {editMode
         ? <input 
             type="text"
             value={changedContent}
             placeholder={changedContent}
             onChange={changeContentHandler}  
           />
-        : <div className="todoContent">{list.content}</div>
+        : <label for={list.id} className={`todoContent${list.isDone ?" done":""}`}>{list.content}</label>
         }
-        {editMode === true
+        <div />
+        {editMode
         ? <button onClick={()=>changeTaskHandler(list)}><FontAwesomeIcon icon={faCheck} size="lg" /></button>
         : <button onClick={editModeHandler}><FontAwesomeIcon icon={faPenToSquare} size="lg" /></button>
         }
-        <button onClick={()=>eraseList(idx)}><FontAwesomeIcon icon={faTimes} size="lg" /></button>
+        <button onClick={()=>eraseList(list.id)}><FontAwesomeIcon icon={faTimes} size="lg" /></button>
       </List>
     </>
 
