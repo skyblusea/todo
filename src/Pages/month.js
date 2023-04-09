@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import styled from 'styled-components';
+import Calendar from "../Component/Calendar";
 import MenuToggle from "../Component/MenuToggle";
 
 const MonthContainer = styled.section`
@@ -67,7 +68,7 @@ const Month = ({openTodayHandler}) => {
         </MenuBtn>
         {isClick 
         ?<MenuToggle openTodayHandler={openTodayHandler} isClick={isClick}/>
-        :null
+        :<Calendar />
         }
     </MonthContainer>
     </>

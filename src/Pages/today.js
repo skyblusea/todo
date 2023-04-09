@@ -2,8 +2,8 @@ import React, {useState} from "react";
 import { faPlus, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
-import AddNewTask from '../Component/addnewtask' 
-import TodoList from "../Component/todoList";
+import AddNewTask from '../Component/Addnewtask' 
+import TodoList from "../Component/TodoList";
 import WeekCalendar from "../Component/WeekCalendar";
 import { initialState } from "../Data/Dummydata";
 import { useNavigate } from "react-router-dom";
@@ -58,7 +58,7 @@ const TodayString = styled.div`
   margin: 10px 0 30px;
 `
 
-const Today = () => {
+const Today = ({today, selectedDate, setDate}) => {
   const navigate = useNavigate();
   const [todoLists, setTodoLists] = useState(initialState.todos)
   const [isOpen, setIsOpen] = useState(false);
@@ -67,9 +67,7 @@ const Today = () => {
   const openModalHandler = () => {
     setIsOpen(!isOpen)
   };
-  const [selectedDate, setDate] = useState(new Date().toISOString().substring(0,10));
 
-  const today= new Date(selectedDate);
   const todayString = new Intl.DateTimeFormat('en-US',{month: "short", day: "numeric"}).format(today);
   const closeTodayHandler = () => {
     setcloseToday(!closeToday)

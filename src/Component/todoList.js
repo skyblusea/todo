@@ -4,6 +4,8 @@ import { faTimes, faPenToSquare, faCheck } from '@fortawesome/free-solid-svg-ico
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const List = styled.li`
+  flex-wrap: nowrap; 
+  /* 2칸으로 안밀리게 하기 */
   margin-bottom: 10px;
   display: flex;
   align-items: center;
@@ -25,7 +27,7 @@ const List = styled.li`
       top: 50%;
       left: 0;
       width: 0;
-      height: 0.1rem;
+      height: 1px;
       background: rgba(150, 150, 150);
     }
     &.done{
@@ -39,6 +41,7 @@ const List = styled.li`
   }
   .todoContent + div {
     width: 100%;
+    flex:
     /* 수정 삭제 아이콘 정렬을 위해 */
   }
 
@@ -69,17 +72,17 @@ const Checkbox = styled.div`
     border-color: transparent;
   }
   .svg{
-    width: 1rem;
-    height: 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
     position: relative;
-    top: 0.1rem;
+    top: 0.2rem;
     transform: scale(0);
     stroke-linecap: round;
     stroke-linejoin: round;
   }
   input:checked + label svg{
     /* input:checked 와 같은 부모를 공유하고 있는 label 의 자식요소 svg */
-    transform: scale(1);
+    transform: scale(1.2);
     transition: all 0.4s ease;
     transition-delay: 0.1s;
   }
@@ -144,7 +147,7 @@ const TodoList = ({todoLists, setTodoLists, list, idx}) => {
           />
         : <label for={list.id} className={`todoContent${list.isDone ?" done":""}`}>{list.content}</label>
         }
-        <div />
+
         {editMode
         ? <button onClick={()=>changeTaskHandler(list)}><FontAwesomeIcon icon={faCheck} size="lg" /></button>
         : <button onClick={editModeHandler}><FontAwesomeIcon icon={faPenToSquare} size="lg" /></button>
